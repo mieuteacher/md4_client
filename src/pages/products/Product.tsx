@@ -1,31 +1,35 @@
+import { useEffect, useState } from 'react'
 import './product.scss'
-import { useState, useCallback } from 'react'
-import { Outlet } from 'react-router-dom'
-import Test from '@components/Test'
-export interface Prop {
-  count: number,
-  handlePrintCount: (count: number) => void;
+import api from '@services/apis'
+
+interface Category {
+  id: string;
+  title: string;
+  avatar: string;
 }
 export default function Product() {
-  const [count, setCount] = useState(0);
-  const [count2, setCount2] = useState(0);
-
-  const handlePrintCount = useCallback((count: number) => {
-    alert("Count value is:  " + count)
-  }, [count])
-  
-  console.log("rerender Product Component")
+  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    api.categoryApi.findMany()
+    .then(res => {
+      if(res.status != 200) {
+        alert(res.data.message)
+      }else {
+        setCategories(res.data.data)
+      }
+    })
+  }, [])
   return (
     <div>
-      <h1>Product {count}</h1>
-      <Test count={count} handlePrintCount={handlePrintCount}/>
-      <Outlet/>
-      <button onClick={() => {
-        setCount(count + 1)
-      }}>Tăng 1</button>
-      <button onClick={() => {
-        setCount2(count2 + 1)
-      }}>Tăng 2</button>
+        <h1>Add Product</h1>
+        <div>
+          Category
+          <select>
+            {
+              categories.map(category => <option key={Math.random() * Date.now()} value={(category as Category).id}>{(category as Category).title}</option>)
+            }
+          </select>
+        </div>
     </div>
   )
 }
