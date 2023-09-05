@@ -13,7 +13,6 @@ function App() {
     if(localStorage.getItem("token")) {
       api.userApi.authentication()
       .then(res => {
-        console.log("res", res)
         if(res.status == 200) {
           dispatch(userAction.setLoginData(res.data.data))
         }else {
