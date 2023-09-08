@@ -6,6 +6,23 @@ import api from '@services/apis'
 import Loading from './components/Loading'
 import { LoadingOutlined } from '@ant-design/icons';
 import { Spin, message, Modal } from 'antd';
+
+interface Product {
+    id: string;
+    name: string;
+    avatar: string;
+    price: number;
+    des: string;
+    categoryId: string;
+    productPictures: {
+        id: string;
+        path: string;
+    }[]
+}
+interface CartItem {
+    productId: string;
+    quantity: number;
+}
 const Register = () => {
     const [load, setLoad] = useState(false);
     const antIcon = (
@@ -43,6 +60,14 @@ const Register = () => {
                     okText: "ok",
                     onOk: () => {
                         localStorage.setItem("token", res.data.token)
+
+                        // /* Xử lý cart */
+                        // let carts: CartItem[] = JSON.parse(localStorage.getItem("carts") ?? "[]");
+                        // if(carts.length > 0) {
+                        //     localStorage.setItem("carts", `{"${data.userName}":${JSON.stringify(carts)}}`)
+                        // }
+                        // /* end cart */
+
                         window.location.href = '/'
                     }
                 })

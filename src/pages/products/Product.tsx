@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { FormEvent, MutableRefObject, useEffect, useRef, useState } from 'react'
 import './product.scss'
 import api from '@services/apis'
 
@@ -12,7 +12,7 @@ interface Picture {
   url: string;
 }
 export default function Product() {
-  const imgPreviewRef = useRef();
+  const imgPreviewRef: MutableRefObject<HTMLImageElement | null> = useRef(null);
   const [categories, setCategories] = useState([]);
   const [pictures, setPictures] = useState<Picture[]>([]);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
@@ -27,7 +27,7 @@ export default function Product() {
     })
   }, [])
 
-  function addNewProduct(e: FormDataEvent) {
+  function addNewProduct(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     let formData = new FormData();
     formData.append("product", JSON.stringify({
